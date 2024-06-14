@@ -6,7 +6,7 @@ import express from 'express'
 
 import boodschappenLijst from './routes/artikels'
 
-export const index = express()
+const index = express()
 export const client:edgedb.Client = edgedb.createClient();
 
 export const getDBError = function (err:unknown):[number,string]{
@@ -51,3 +51,5 @@ const port = Number(process.env.PORT || 6000)
 http.createServer(index).listen(port,()=>{
     console.log('server listening on port 6000')
 })
+
+module.exports = index
