@@ -4,6 +4,8 @@ import http from 'http'
 import * as edgedb from "edgedb"
 import express from 'express'
 
+import boodschappenLijst from './routes/artikels'
+
 export const index = express()
 export const client:edgedb.Client = edgedb.createClient();
 
@@ -29,7 +31,11 @@ index.use(((req:any, res:any, next:any) => {
 
 // setting up middlewares
 
+
+
 index.get("/", (req, res) => res.send("Express on Vercel"));
+
+index.use('/boodschappen-lijst', boodschappenLijst)
 
 
 // handle all non-defined requests
