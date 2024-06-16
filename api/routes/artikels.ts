@@ -36,7 +36,7 @@ router.post('/:user',async (req,res,next)=>{
                 hoeveelheid:true,
                 artikel:{
                     id:true,
-                    naam:true,
+                    titel:true,
                     eenheid:true
                 }
             })).run(client)
@@ -59,7 +59,7 @@ router.post('/:user',async (req,res,next)=>{
                 hoeveelheid:true,
                 artikel:{
                     id:true,
-                    naam:true,
+                    titel:true,
                     eenheid:true
                 }
             })).run(client)
