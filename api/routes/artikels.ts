@@ -29,7 +29,7 @@ router.post('/:user',async (req,res,next)=>{
                 user:req.params.user
             }).run(client)
             if(!artikelItem) throw new Error('unable to insert artikelItem')
-            const nieuwArtikelItem = e.select(e.ArtikelItem,()=>({
+            const nieuwArtikelItem = await e.select(e.ArtikelItem,()=>({
                 filter_single:{id:artikelItem.id},
                 id:true,
                 user:true,
@@ -52,7 +52,7 @@ router.post('/:user',async (req,res,next)=>{
                 user:req.params.user
             }).run(client)
             if(!artikelItem) throw new Error('unable to insert artikelItem')
-            const nieuwArtikelItem = e.select(e.ArtikelItem,()=>({
+            const nieuwArtikelItem = await e.select(e.ArtikelItem,()=>({
                 filter_single:{id:artikelItem.id},
                 id:true,
                 user:true,
