@@ -9,6 +9,7 @@ router.post('/:user',async (req,res,next)=>{
         const naam = req.body.naam
         const hoeveelheid = req.body.hoeveelheid
         const eenheid = req.body.eenheid
+
         // zoek eerst of het artikel al bestaat
         const result = await e.select(e.Artikel,()=>({
             filter_single:{titel:naam}
@@ -28,6 +29,19 @@ router.post('/:user',async (req,res,next)=>{
                 user:req.params.user
             }).run(client)
             if(!artikelItem) throw new Error('unable to insert artikelItem')
+            const nieuwArtikelItem = e.select(e.ArtikelItem,()=>({
+                filter_single:{id:artikelItem.id},
+                id:true,
+                user:true,
+                hoeveelheid:true,
+                artikel:{
+                    id:true,
+                    naam:true,
+                    eenheid:true
+                }
+            })).run(client)
+            if(!nieuwArtikelItem) throw new Error('nieuw artikel item niet kunnen vinden')
+            res.status(201).send(nieuwArtikelItem)
         } else{
             // indien JA => gebruik het bij de insert van ArtikelItem
             const artikelItem = await e.insert(e.ArtikelItem,{
@@ -38,8 +52,20 @@ router.post('/:user',async (req,res,next)=>{
                 user:req.params.user
             }).run(client)
             if(!artikelItem) throw new Error('unable to insert artikelItem')
+            const nieuwArtikelItem = e.select(e.ArtikelItem,()=>({
+                filter_single:{id:artikelItem.id},
+                id:true,
+                user:true,
+                hoeveelheid:true,
+                artikel:{
+                    id:true,
+                    naam:true,
+                    eenheid:true
+                }
+            })).run(client)
+            if(!nieuwArtikelItem) throw new Error('nieuw artikel item niet kunnen vinden')
+            res.status(201).send(nieuwArtikelItem)
         }
-        res.status(201).send(result)
     } catch (err){
         const [code,error] = getDBError(err)
         res.status(code).json({
