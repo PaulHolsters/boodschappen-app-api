@@ -4,6 +4,28 @@ import {client, getDBError} from "../index";
 
 const router = Router()
 
+router.get('/:user',async (req,res,next)=> {
+    try {
+        const nieuwArtikelItem = await e.select(e.ArtikelItem,()=>({
+            filter_single:{user:req.params.user},
+            id:true,
+            user:true,
+            hoeveelheid:true,
+            artikel:{
+                id:true,
+                titel:true,
+                eenheid:true
+            }
+        })).run(client)
+        if(!nieuwArtikelItem) throw new Error('nieuw artikel item niet kunnen vinden')
+        res.status(201).send(nieuwArtikelItem)
+    } catch (err) {
+        const [code, error] = getDBError(err)
+        res.status(code).json({
+            error: error
+        })
+    }
+})
 router.post('/:user',async (req,res,next)=>{
     try {
         const naam = req.body.naam
