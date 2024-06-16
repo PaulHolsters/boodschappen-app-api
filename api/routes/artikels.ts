@@ -6,8 +6,9 @@ const router = Router()
 
 router.get('/:user',async (req,res,next)=> {
     try {
-        const nieuwArtikelItem = await e.select(e.ArtikelItem,()=>({
-            filter:{user:req.params.user},
+
+        const nieuwArtikelItem = await e.select(e.ArtikelItem,(artItem)=>({
+            filter_single:e.op(artItem.user,'=',req.params.user),
             id:true,
             user:true,
             hoeveelheid:true,
