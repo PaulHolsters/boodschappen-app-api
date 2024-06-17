@@ -19,7 +19,7 @@ router.get('/:user',async (req,res,next)=> {
             }
         })).run(client)
         if(!nieuwArtikelItem) throw new Error('nieuw artikel item niet kunnen vinden')
-        res.status(201).send(nieuwArtikelItem)
+        res.status(200).send(nieuwArtikelItem)
     } catch (err) {
         const [code, error] = getDBError(err)
         res.status(code).json({
