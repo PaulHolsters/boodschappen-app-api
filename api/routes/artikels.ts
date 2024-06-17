@@ -27,7 +27,7 @@ router.get('/:user',async (req,res,next)=> {
     }
 })
 
-router.delete('/:id',async (req,res,next)=> {
+router.delete('/:user/:id',async (req,res,next)=> {
     try {
         const nieuwArtikelItem = await e.delete(e.ArtikelItem,(()=>({
             filter_single:{id:req.params.id}
@@ -41,6 +41,23 @@ router.delete('/:id',async (req,res,next)=> {
         })
     }
 })
+
+router.delete('/:user',async (req,res,next)=> {
+    try {
+        const nieuwArtikelItem = await e.delete(e.ArtikelItem,((item)=>({
+            filter:e.op(item.user,'=',req.params.user)
+        }))).run(client)
+        if(!nieuwArtikelItem) throw new Error('artikel item niet kunnen verwijderen')
+        res.status(200).send(nieuwArtikelItem)
+    } catch (err) {
+        const [code, error] = getDBError(err)
+        res.status(code).json({
+            error: error
+        })
+    }
+})
+
+
 router.post('/:user',async (req,res,next)=>{
     try {
         const naam = req.body.naam
