@@ -6,7 +6,6 @@ const router = Router()
 
 router.get('/:user',async (req,res,next)=> {
     try {
-
         const nieuwArtikelItem = await e.select(e.ArtikelItem,(artItem)=>({
             filter:e.op(artItem.user,'=',req.params.user),
             id:true,
@@ -19,6 +18,21 @@ router.get('/:user',async (req,res,next)=> {
             }
         })).run(client)
         if(!nieuwArtikelItem) throw new Error('nieuw artikel item niet kunnen vinden')
+        res.status(200).send(nieuwArtikelItem)
+    } catch (err) {
+        const [code, error] = getDBError(err)
+        res.status(code).json({
+            error: error
+        })
+    }
+})
+
+router.delete('/:id',async (req,res,next)=> {
+    try {
+        const nieuwArtikelItem = await e.delete(e.ArtikelItem,(()=>({
+            filter_single:{id:req.params.id}
+        }))).run(client)
+        if(!nieuwArtikelItem) throw new Error('artikel item niet kunnen verwijderen')
         res.status(200).send(nieuwArtikelItem)
     } catch (err) {
         const [code, error] = getDBError(err)
